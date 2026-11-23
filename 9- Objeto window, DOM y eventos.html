@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Saludo Interactivo</title>
+</head>
+<body>
+    <h2>Saludo Interactivo</h2>
+
+    <input id="nombre" placeholder="Ingresa tu nombre">
+    <button id="saludar">Saludar</button>
+
+    <p id="error"></p>
+    <div id="mensajes"></div>
+
+    <script>
+        const botSaludo = document.getElementById("saludar");
+        const inputNombre = document.getElementById("nombre");
+        const divMensajes = document.getElementById("mensajes");
+        const pError = document.getElementById("error");
+
+        botSaludo.addEventListener("click", function () {
+            const nombre = inputNombre.value.trim();
+
+            if (nombre === "") {
+                pError.textContent = "Por favor, introduce tu nombre.";
+                return;
+            }
+            pError.textContent = "";
+
+            const mensaje = `¡Hola ${nombre}! Bienvenido/a.`;
+
+            // Añadir el mensaje al DOM sin borrar los anteriores
+            const nuevoMensaje = document.createElement("p");
+            nuevoMensaje.textContent = mensaje;
+            divMensajes.appendChild(nuevoMensaje);
+
+            // El mensaje desaparece a los 5 segundos
+            setTimeout(function () {
+                nuevoMensaje.remove();
+            }, 5000);
+
+            // Alerta con el mismo mensaje
+            window.alert(mensaje);
+
+            // Ventana hija con el mensaje de bienvenida
+            const hija = window.open("", "_blank", "width=400,height=200");
+            hija.document.write(`
+                <!DOCTYPE html>
+                <html lang="es">
+                <head><meta charset="UTF-8"><title>Bienvenida</title></head>
+                <body>
+                    <h2>¡Bienvenido/a, ${nombre}!</h2>
+                </body>
+                </html>
+            `);
+            hija.document.close();
+
+            inputNombre.value = "";
+        });
+    </script>
+</body>
+</html>
